@@ -74,8 +74,9 @@ resource "aws_instance" "wordpress" {
   instance_type               = var.ec2_instance_type
   associate_public_ip_address = true
   subnet_id                   = sort(data.aws_subnet_ids.subnets.ids)[0]
-  security_groups             = aws_security_group.ec2_securitygroup.id
+  security_groups             = [aws_security_group.ec2_securitygroup.id]
   key_name                    = local.key_name
+  user_data = data.template_file.userdata.rendered
   //iam_instance_profile = "my-profile"
   tags = merge(local.tags, {
     Name = "wordpress-instances"

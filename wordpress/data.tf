@@ -60,7 +60,7 @@ data "template_file" "nginx_conf" {
     template = <<-EOF
 
     server {
-        listen 80;
+        listen ${external_port};
         location / {
             proxy_set_header HOST $host;
             proxy_set_header X-Forwarded-Proto $scheme;
@@ -72,6 +72,11 @@ data "template_file" "nginx_conf" {
 
 
     EOF
+
+    vars = {
+      "external_port" = var.nginx_port
+    }
+
 }
 
 data "template_file" "userdata" {
